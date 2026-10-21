@@ -81,8 +81,9 @@
         <legend>Photo</legend>
         <button class="dropzone" type="button" data-photo-pick="photo">
           <img alt="" hidden>
-          <span><b><span class="t-mouse">Drop, paste (Ctrl+V) or click</span><span class="t-touch">Tap to choose a photo</span></b><br>Fills the whole post, shown in black and white.</span>
+          <span><b><span class="t-mouse">Drop, paste (Ctrl+V) or click</span><span class="t-touch">Tap to choose a photo</span></b><br>Fills the whole post.</span>
         </button>
+        <label class="check"><input type="checkbox" name="photoMono"> Black &amp; white filter</label>
         <label class="field"><span>Zoom <span class="val" aria-hidden="true"></span></span><input type="range" name="photoZoom" min="40" max="300" step="any"></label>
         <div class="row">
           <label class="field"><span>Horizontal focus</span><input type="range" name="photoX" min="0" max="100" step="any"></label>
@@ -294,8 +295,8 @@
 
     <div class="stage" data-stage="declaraciones" hidden>
       <div class="canvas post" id="tpl-declaraciones" lang="es">
-        <div class="photo full mono" data-photo="photo">
-          <div class="photo-placeholder"><p class="photo-hint no-export" lang="en">ADD A PHOTO<br><small>1080 × 1350 · black and white</small></p></div>
+        <div class="photo full" data-photo="photo">
+          <div class="photo-placeholder"><p class="photo-hint no-export" lang="en">ADD A PHOTO<br><small>1080 × 1350</small></p></div>
         </div>
         <div class="fade-top"></div>
         <div class="dc-fade"></div>

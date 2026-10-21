@@ -36,7 +36,7 @@ const DEFAULTS = {
     highlight: 'lesión', status: 'EN DESARROLLO', source: '[Nombre]',
   },
   declaraciones: {
-    photo: '', photoX: '50', photoY: '25', photoZoom: '100',
+    photo: '', photoX: '50', photoY: '25', photoZoom: '100', photoMono: false,
     quote: 'Hemos trabajado mucho para este momento y vamos a darlo todo en la final.', quoteSize: '',
     name: '[Jugador]', context: 'Rueda de prensa · Previa de la final',
   },
@@ -457,7 +457,9 @@ const RENDER = {
   },
 
   declaraciones(d, root) {
-    applyPhoto($('[data-photo]', root), d, 'photo');
+    const photo = $('[data-photo]', root);
+    applyPhoto(photo, d, 'photo');
+    photo.classList.toggle('mono', Boolean(d.photoMono));   // "Black & white filter" checkbox
     const body = multiline(d.quote).replace(/^[«"“'‘]+|[»"”'’]+$/g, '').trim();
     const quote = $('.quote-text', root);
     quote.textContent = body ? `«${body}»` : '';

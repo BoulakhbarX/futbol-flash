@@ -6,7 +6,7 @@
    After uploading changed files, change VERSION: installed apps then download
    the new files and switch to them the next time they're opened.
    ===================================================================== */
-const VERSION = '2026-10-21.1';
+const VERSION = '2026-10-21.2';
 const CACHE = `ff-studio-${VERSION}`;
 const FILES = [
   './',

@@ -41,7 +41,7 @@
   background-repeat: no-repeat; background-size: cover; background-position: 50% 30%;
 }
 .photo.full { height: 1350px; }
-.photo.mono { filter: grayscale(1) contrast(1.15); }
+.photo.mono { filter: grayscale(1) contrast(1.15); }   /* Declaraciones: "Black & white filter" checkbox */
 .photo-placeholder {
   position: absolute; inset: 0; display: grid; place-items: center; padding-bottom: 300px;
   background: repeating-linear-gradient(135deg, #161B22 0 28px, #12161C 28px 56px);

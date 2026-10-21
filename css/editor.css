@@ -136,6 +136,7 @@ input[type="range"] { width: 100%; accent-color: var(--amarillo); }
   .btn kbd { display: none; }
   input[type="range"] { height: 30px; }
   .link { padding: 6px 0; }
+  .check { min-height: 36px; }   /* easier to tap */
 }
 
 /* ---------- Phone and narrow windows: preview on top, form below ---------- */
