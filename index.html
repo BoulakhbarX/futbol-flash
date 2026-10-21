@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- interactive-widget: on Android the page (and the preview) shrinks above the keyboard -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="theme-color" content="#0A0D12">
+<title>Fútbol Flash Studio</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="vendor/fonts.css">
+<link rel="stylesheet" href="css/templates.css">
+<link rel="stylesheet" href="css/editor.css">
+<script defer src="vendor/html-to-image.js"></script>
+<script defer src="js/app.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">FÚTBOL<span>FLASH</span><small>STUDIO</small></div>
+  <nav class="tabs" role="tablist" aria-label="Template">
+    <button class="tab" type="button" role="tab" data-tab="ultima-hora" aria-selected="true">Última Hora</button>
+    <button class="tab" type="button" role="tab" data-tab="declaraciones" aria-selected="false">Declaraciones</button>
+    <button class="tab" type="button" role="tab" data-tab="en-juego" aria-selected="false">En Juego</button>
+    <button class="tab" type="button" role="tab" data-tab="resultado" aria-selected="false">Resultados</button>
+  </nav>
+  <div class="spacer"></div>
+  <button class="btn" id="btn-reset" type="button">Reset</button>
+  <button class="btn" id="btn-folder" type="button" hidden>Open folder</button>
+  <button class="btn btn-primary" id="btn-generate" type="button"><span class="btn-label">Generate PNG</span> <kbd>Ctrl</kbd><kbd>Enter</kbd></button>
+</header>
+
+<div class="workspace">
+
+  <!-- ======================= FORMS ======================= -->
+  <aside class="panel">
+
+    <form data-form="ultima-hora" autocomplete="off">
+      <fieldset>
+        <legend>Photo</legend>
+        <button class="dropzone" type="button" data-photo-pick="photo">
+          <img alt="" hidden>
+          <span><b><span class="t-mouse">Drop, paste (Ctrl+V) or click</span><span class="t-touch">Tap to choose a photo</span></b><br>Any JPG or PNG. It fills 1080 × 900.</span>
+        </button>
+        <label class="field"><span>Zoom <span class="val" aria-hidden="true"></span></span><input type="range" name="photoZoom" min="40" max="300" step="any"></label>
+        <div class="row">
+          <label class="field"><span>Horizontal focus</span><input type="range" name="photoX" min="0" max="100" step="any"></label>
+          <label class="field"><span>Vertical focus</span><input type="range" name="photoY" min="0" max="100" step="any"></label>
+        </div>
+        <p class="hint">Head cut off? Zoom below 100%: the whole photo shrinks and a blurred copy fills the edges. <span class="t-mouse">You can also drag the photo in the preview, and scroll over it to zoom.</span><span class="t-touch">You can also move the photo in the preview with one finger, and pinch to zoom.</span></p>
+        <div class="links">
+          <button class="link" type="button" data-photo-reset="photo">Reset framing</button>
+          <button class="link" type="button" data-photo-remove="photo">Remove photo</button>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Text</legend>
+        <label class="field"><span>Yellow label</span><input type="text" name="label" list="uh-labels" maxlength="28"></label>
+        <p class="hint">Pick a suggestion or type your own. Leave it empty to hide the label.</p>
+        <label class="field"><span>Headline <em class="count" data-count="headline" data-max="10"></em></span>
+          <textarea name="headline" rows="3" maxlength="160"></textarea></label>
+        <div class="size-control">
+          <label class="field"><span>Headline size <span class="val" aria-hidden="true"></span></span>
+            <input type="range" name="headlineSize" min="48" max="160" step="1" data-size-of=".headline"></label>
+          <label class="check"><input type="checkbox" data-auto-size="headlineSize"> Auto-fit</label>
+        </div>
+        <p class="hint">Press Enter to start a new line. Auto-fit shrinks long headlines to 3 lines; move the slider to set the size yourself.</p>
+        <label class="field"><span>Yellow word</span><input type="text" name="highlight"></label>
+        <p class="hint">Tip: click any word of the headline in the preview to make it yellow.</p>
+        <div class="row">
+          <label class="field"><span>Status</span>
+            <select name="status"><option>EN DESARROLLO</option><option>CONFIRMADO</option><option>OFICIAL</option></select></label>
+          <label class="field"><span>Source</span><input type="text" name="source" placeholder="Nombre del periodista"></label>
+        </div>
+      </fieldset>
+    </form>
+
+    <form data-form="declaraciones" autocomplete="off" hidden>
+      <fieldset>
+        <legend>Photo</legend>
+        <button class="dropzone" type="button" data-photo-pick="photo">
+          <img alt="" hidden>
+          <span><b><span class="t-mouse">Drop, paste (Ctrl+V) or click</span><span class="t-touch">Tap to choose a photo</span></b><br>Fills the whole post, shown in black and white.</span>
+        </button>
+        <label class="field"><span>Zoom <span class="val" aria-hidden="true"></span></span><input type="range" name="photoZoom" min="40" max="300" step="any"></label>
+        <div class="row">
+          <label class="field"><span>Horizontal focus</span><input type="range" name="photoX" min="0" max="100" step="any"></label>
+          <label class="field"><span>Vertical focus</span><input type="range" name="photoY" min="0" max="100" step="any"></label>
+        </div>
+        <p class="hint">Head cut off? Zoom below 100%: the whole photo shrinks and a blurred copy fills the edges. <span class="t-mouse">You can also drag the photo in the preview, and scroll over it to zoom.</span><span class="t-touch">You can also move the photo in the preview with one finger, and pinch to zoom.</span></p>
+        <div class="links">
+          <button class="link" type="button" data-photo-reset="photo">Reset framing</button>
+          <button class="link" type="button" data-photo-remove="photo">Remove photo</button>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Quote</legend>
+        <label class="field"><span>Quote <em class="count" data-count="quote" data-max="25"></em></span>
+          <textarea name="quote" rows="4" maxlength="320"></textarea></label>
+        <div class="size-control">
+          <label class="field"><span>Quote size <span class="val" aria-hidden="true"></span></span>
+            <input type="range" name="quoteSize" min="30" max="76" step="1" data-size-of=".quote-text"></label>
+          <label class="check"><input type="checkbox" data-auto-size="quoteSize"> Auto-fit</label>
+        </div>
+        <p class="hint">The « » quotation marks are added for you. Press Enter to start a new line.</p>
+        <label class="field"><span>Who said it</span><input type="text" name="name"></label>
+        <label class="field"><span>Context</span><input type="text" name="context" placeholder="Rueda de prensa · Previa de la final"></label>
+      </fieldset>
+    </form>
+
+    <form data-form="en-juego" autocomplete="off" hidden>
+      <fieldset>
+        <legend>Photos</legend>
+        <label class="field"><span>Layout</span>
+          <select name="layout">
+            <option value="single">One large photo</option>
+            <option value="split">Two photos (split)</option>
+          </select></label>
+        <div class="slot" data-slot="photo">
+          <p class="slot-title" data-split-only>Photo 1 · left</p>
+          <button class="dropzone" type="button" data-photo-pick="photo">
+            <img alt="" hidden>
+            <span><b><span class="t-mouse">Drop, paste (Ctrl+V) or click</span><span class="t-touch">Tap to choose a photo</span></b><br>Fills the whole post.</span>
+          </button>
+          <label class="field"><span>Zoom <span class="val" aria-hidden="true"></span></span><input type="range" name="photoZoom" min="40" max="300" step="any"></label>
+          <div class="row">
+            <label class="field"><span>Horizontal focus</span><input type="range" name="photoX" min="0" max="100" step="any"></label>
+            <label class="field"><span>Vertical focus</span><input type="range" name="photoY" min="0" max="100" step="any"></label>
+          </div>
+          <div class="links">
+            <button class="link" type="button" data-photo-reset="photo">Reset framing</button>
+            <button class="link" type="button" data-photo-remove="photo">Remove photo</button>
+          </div>
+        </div>
+        <div class="slot" data-slot="photo2" data-split-only>
+          <p class="slot-title">Photo 2 · right</p>
+          <button class="dropzone" type="button" data-photo-pick="photo2">
+            <img alt="" hidden>
+            <span><b><span class="t-mouse">Drop, paste (Ctrl+V) or click</span><span class="t-touch">Tap to choose a photo</span></b><br>Shown on the right side of the cut.</span>
+          </button>
+          <label class="field"><span>Zoom <span class="val" aria-hidden="true"></span></span><input type="range" name="photo2Zoom" min="40" max="300" step="any"></label>
+          <div class="row">
+            <label class="field"><span>Horizontal focus</span><input type="range" name="photo2X" min="0" max="100" step="any"></label>
+            <label class="field"><span>Vertical focus</span><input type="range" name="photo2Y" min="0" max="100" step="any"></label>
+          </div>
+          <div class="links">
+            <button class="link" type="button" data-photo-reset="photo2">Reset framing</button>
+            <button class="link" type="button" data-photo-remove="photo2">Remove photo</button>
+          </div>
+        </div>
+        <p class="hint">Head cut off? Zoom below 100%: the whole photo shrinks and a blurred copy fills the edges. <span class="t-mouse">You can also drag a photo in the preview, and scroll over it to zoom.</span><span class="t-touch">You can also move a photo in the preview with one finger, and pinch to zoom.</span></p>
+      </fieldset>
+      <fieldset>
+        <legend>Text</legend>
+        <label class="field"><span>Label</span><input type="text" name="label" list="ej-labels" maxlength="24"></label>
+        <label class="field"><span>Headline <em class="count" data-count="headline" data-max="8"></em></span>
+          <textarea name="headline" rows="3" maxlength="120"></textarea></label>
+        <div class="size-control">
+          <label class="field"><span>Headline size <span class="val" aria-hidden="true"></span></span>
+            <input type="range" name="headlineSize" min="48" max="160" step="1" data-size-of=".headline"></label>
+          <label class="check"><input type="checkbox" data-auto-size="headlineSize"> Auto-fit</label>
+        </div>
+        <p class="hint">Press Enter to start a new line. Auto-fit shrinks long headlines to 3 lines; move the slider to set the size yourself.</p>
+        <label class="field"><span>Yellow word</span><input type="text" name="highlight"></label>
+        <p class="hint">Tip: click any word of the headline in the preview to make it yellow.</p>
+        <label class="field"><span>Match context</span><input type="text" name="context" placeholder="El Clásico · Minuto 67"></label>
+        <label class="field"><span>Photo credit</span><input type="text" name="credit" placeholder="e.g. Real Madrid C.F. / own photo"></label>
+      </fieldset>
+    </form>
+
+    <form data-form="resultado" autocomplete="off" hidden>
+      <fieldset>
+        <legend>Match</legend>
+        <div class="row">
+          <label class="field"><span>Competition</span><input type="text" name="competition"></label>
+          <label class="field"><span>State</span>
+            <select name="state"><option>FINAL</option><option>DESCANSO</option><option>EN DIRECTO</option></select></label>
+        </div>
+      </fieldset>
+      <fieldset data-side="home">
+        <legend>Home team</legend>
+        <div class="team">
+          <label class="field"><span>Team</span><input type="text" name="homeName" list="team-list"></label>
+          <label class="field"><span>Code</span><input type="text" name="homeCode" maxlength="4"></label>
+          <label class="field"><span>Color</span><input type="color" name="homeColor"></label>
+          <label class="field"><span>Goals</span><input type="text" name="homeScore" inputmode="numeric" maxlength="2"></label>
+        </div>
+        <div class="logo-row">
+          <button class="dropzone compact" type="button" data-logo-pick="home">
+            <img alt="" hidden>
+            <span><b>Club logo</b>: <span class="t-mouse">drop, paste or click</span><span class="t-touch">tap to choose</span> (PNG works best)</span>
+          </button>
+          <label class="check"><input type="checkbox" name="homeLogoCircle"> White circle</label>
+          <button class="link" type="button" data-logo-remove="home">Remove logo</button>
+        </div>
+        <label class="field"><span>Scorers</span><input type="text" name="homeScorers" placeholder="Vinícius Jr. 23', Bellingham 67'"></label>
+      </fieldset>
+      <fieldset data-side="away">
+        <legend>Away team</legend>
+        <div class="team">
+          <label class="field"><span>Team</span><input type="text" name="awayName" list="team-list"></label>
+          <label class="field"><span>Code</span><input type="text" name="awayCode" maxlength="4"></label>
+          <label class="field"><span>Color</span><input type="color" name="awayColor"></label>
+          <label class="field"><span>Goals</span><input type="text" name="awayScore" inputmode="numeric" maxlength="2"></label>
+        </div>
+        <div class="logo-row">
+          <button class="dropzone compact" type="button" data-logo-pick="away">
+            <img alt="" hidden>
+            <span><b>Club logo</b>: <span class="t-mouse">drop, paste or click</span><span class="t-touch">tap to choose</span> (PNG works best)</span>
+          </button>
+          <label class="check"><input type="checkbox" name="awayLogoCircle"> White circle</label>
+          <button class="link" type="button" data-logo-remove="away">Remove logo</button>
+        </div>
+        <label class="field"><span>Scorers</span><input type="text" name="awayScorers"></label>
+      </fieldset>
+      <fieldset>
+        <legend>Stats</legend>
+        <div class="stat-row">
+          <label class="field"><span>Stat</span><input type="text" name="stat1Label" list="stat-list"></label>
+          <label class="field"><span>Home</span><input type="text" name="stat1Home"></label>
+          <label class="field"><span>Away</span><input type="text" name="stat1Away"></label>
+        </div>
+        <div class="stat-row">
+          <input type="text" name="stat2Label" list="stat-list" aria-label="Stat 2">
+          <input type="text" name="stat2Home" aria-label="Stat 2 home">
+          <input type="text" name="stat2Away" aria-label="Stat 2 away">
+        </div>
+        <div class="stat-row">
+          <input type="text" name="stat3Label" list="stat-list" aria-label="Stat 3">
+          <input type="text" name="stat3Home" aria-label="Stat 3 home">
+          <input type="text" name="stat3Away" aria-label="Stat 3 away">
+        </div>
+        <p class="hint">Bars are calculated from the numbers. Leave a stat name empty to hide that row.</p>
+      </fieldset>
+      <fieldset>
+        <legend>Details</legend>
+        <div class="row">
+          <label class="field"><span>Winner</span>
+            <select name="winner">
+              <option value="auto">From the score</option>
+              <option value="home">Home (penalties)</option>
+              <option value="away">Away (penalties)</option>
+            </select></label>
+          <label class="field"><span>Data source</span><input type="text" name="source"></label>
+        </div>
+        <p class="hint">Codes, colors and logos are saved to your team library each time you generate. Pasting a logo puts it on the team you're editing. Dark or JPG logo? Tick "White circle".</p>
+      </fieldset>
+      <fieldset>
+        <legend>Team library</legend>
+        <p class="hint">The PC and the phone each keep their own library. Export it on one device and import the file on the other to copy your teams and logos over.</p>
+        <div class="links">
+          <button class="link" type="button" id="btn-teams-export">Export library</button>
+          <button class="link" type="button" id="btn-teams-import">Import library</button>
+        </div>
+      </fieldset>
+    </form>
+
+    <datalist id="team-list"></datalist>
+    <datalist id="stat-list">
+      <option value="POSESIÓN"></option><option value="TIROS"></option><option value="TIROS A PUERTA"></option>
+      <option value="CÓRNERS"></option><option value="FALTAS"></option><option value="TARJETAS"></option>
+      <option value="xG"></option><option value="PASES"></option>
+    </datalist>
+    <datalist id="uh-labels">
+      <option value="ÚLTIMA HORA"></option><option value="DATO FLASH"></option><option value="OFICIAL"></option>
+      <option value="EXCLUSIVA"></option><option value="MERCADO"></option>
+    </datalist>
+    <datalist id="ej-labels">
+      <option value="EN JUEGO"></option><option value="POLÉMICA"></option><option value="VAR"></option>
+      <option value="OCASIÓN"></option><option value="REACCIÓN"></option><option value="GOL"></option>
+    </datalist>
+  </aside>
+
+  <!-- ======================= DESIGNS ======================= -->
+  <main class="preview" id="preview" aria-label="Preview">
+
+    <div class="stage" data-stage="ultima-hora">
+      <div class="canvas post" id="tpl-ultima-hora" lang="es">
+        <div class="photo" data-photo="photo">
+          <div class="photo-placeholder"><p class="photo-hint no-export" lang="en">ADD A PHOTO<br><small>1080 × 900</small></p></div>
+        </div>
+        <div class="fade-top"></div>
+        <div class="fade-bottom"></div>
+        <div class="wordmark"><span class="w1">FÚTBOL</span><span class="w2">FLASH</span></div>
+        <div class="uh-text">
+          <div class="label-flash">ÚLTIMA HORA</div>
+          <p class="headline"></p>
+          <p class="meta"></p>
+        </div>
+        <div class="flash-line"></div>
+      </div>
+    </div>
+
+    <div class="stage" data-stage="declaraciones" hidden>
+      <div class="canvas post" id="tpl-declaraciones" lang="es">
+        <div class="photo full mono" data-photo="photo">
+          <div class="photo-placeholder"><p class="photo-hint no-export" lang="en">ADD A PHOTO<br><small>1080 × 1350 · black and white</small></p></div>
+        </div>
+        <div class="fade-top"></div>
+        <div class="dc-fade"></div>
+        <div class="wordmark"><span class="w1">FÚTBOL</span><span class="w2">FLASH</span></div>
+        <div class="dc-text">
+          <p class="chip chip--dot">DECLARACIONES</p>
+          <blockquote class="quote"><p class="quote-text"></p></blockquote>
+          <p class="q-name"></p>
+          <p class="q-context"></p>
+        </div>
+        <div class="flash-line"></div>
+      </div>
+    </div>
+
+    <div class="stage" data-stage="en-juego" hidden>
+      <div class="canvas post" id="tpl-en-juego" lang="es">
+        <div class="ej-photos" data-layout="single">
+          <div class="photo full ej-a" data-photo="photo">
+            <div class="photo-placeholder"><p class="photo-hint no-export" lang="en">ADD PHOTO 1</p></div>
+          </div>
+          <div class="photo full ej-b" data-photo="photo2">
+            <div class="photo-placeholder"><p class="photo-hint no-export" lang="en">ADD PHOTO 2</p></div>
+          </div>
+        </div>
+        <div class="fade-top"></div>
+        <div class="ej-fade"></div>
+        <div class="wordmark"><span class="w1">FÚTBOL</span><span class="w2">FLASH</span></div>
+        <div class="ej-text">
+          <p class="chip chip--dot ej-label"></p>
+          <p class="headline"></p>
+          <p class="meta"></p>
+        </div>
+        <p class="ej-credit"></p>
+        <div class="flash-line"></div>
+      </div>
+    </div>
+
+    <div class="stage" data-stage="resultado" hidden>
+      <div class="canvas post" id="tpl-resultado" lang="es">
+        <div class="wordmark"><span class="w1">FÚTBOL</span><span class="w2">FLASH</span></div>
+        <div class="res-header">
+          <p class="competition"></p>
+          <p class="chip match-state"></p>
+        </div>
+        <div class="board">
+          <div class="team-row" data-side="home"><div class="crest"></div><div class="team-name"></div><div class="score"></div></div>
+          <div class="team-row" data-side="away"><div class="crest"></div><div class="team-name"></div><div class="score"></div></div>
+        </div>
+        <div class="scorers">
+          <p data-side="home"><b></b><span></span></p>
+          <p data-side="away"><b></b><span></span></p>
+        </div>
+        <div class="stats">
+          <div class="stat" data-stat="1"><span class="v"></span><span class="stat-label"></span><span class="v"></span><div class="track"><div class="fill"></div></div></div>
+          <div class="stat" data-stat="2"><span class="v"></span><span class="stat-label"></span><span class="v"></span><div class="track"><div class="fill"></div></div></div>
+          <div class="stat" data-stat="3"><span class="v"></span><span class="stat-label"></span><span class="v"></span><div class="track"><div class="fill"></div></div></div>
+        </div>
+        <p class="source"></p>
+        <div class="flash-line"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Result sheet (phone app): the finished PNG with Share / Save / Copy -->
+<dialog class="result" id="result" aria-labelledby="result-title">
+  <form method="dialog" class="result-card">
+    <h2 id="result-title">Ready to post</h2>
+    <img id="result-img" alt="The generated graphic">
+    <div class="result-actions">
+      <button class="btn btn-primary" type="button" data-result="share">Share…</button>
+      <button class="btn" type="button" data-result="save">Save</button>
+      <button class="btn" type="button" data-result="copy">Copy</button>
+      <button class="btn" value="close">Close</button>
+    </div>
+    <p class="hint" id="result-hint"></p>
+  </form>
+</dialog>
+
+<div class="toasts" role="status" aria-live="polite"></div>
+<input type="file" id="file-input" accept="image/*" hidden>
+<input type="file" id="teams-input" accept=".json,application/json" hidden>
+</body>
+</html>

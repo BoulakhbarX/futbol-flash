@@ -1,0 +1,177 @@
+/* =====================================================================
+   FÚTBOL FLASH STUDIO · editor interface (never exported)
+   ===================================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+
+:root {
+  --ui-bg: #12151B;
+  --ui-panel: #171B22;
+  --ui-field: #0E1116;
+  --ui-line: #282E39;
+  --ui-text: #C9D1DC;
+  --ui-dim: #8B95A5;
+  --ui-error: #FF6B6B;
+}
+
+html, body { height: 100%; }
+body {
+  display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden;
+  background: var(--ui-bg); color: var(--ui-text); font: 500 14px/1.4 var(--montserrat);
+}
+
+/* ---------- Top bar ---------- */
+.topbar { display: flex; align-items: center; gap: 16px; padding: 10px 18px; background: #0B0E13; border-bottom: 1px solid var(--ui-line); }
+.brand { font: 400 22px/1 var(--anton); letter-spacing: .02em; color: var(--blanco); white-space: nowrap; }
+.brand span { margin-left: 4px; padding: 2px 6px; background: var(--amarillo); color: var(--negro); }
+.brand small { margin-left: 10px; font: 700 11px/1 var(--montserrat); letter-spacing: .16em; color: var(--ui-dim); vertical-align: middle; }
+
+.tabs { display: flex; gap: 4px; padding: 4px; background: var(--ui-field); border: 1px solid var(--ui-line); border-radius: 10px; }
+.tab { padding: 9px 14px; border: 0; border-radius: 7px; background: none; color: var(--ui-dim); font: 600 13px/1 var(--montserrat); cursor: pointer; white-space: nowrap; }
+.tab:hover { color: var(--blanco); }
+.tab[aria-selected="true"] { background: #262D39; color: var(--blanco); box-shadow: inset 0 -2px 0 var(--amarillo); }
+.spacer { flex: 1; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; white-space: nowrap; cursor: pointer;
+  border: 1px solid #3A4250; border-radius: 8px; background: #232934; color: var(--blanco); font: 600 13px/1 var(--montserrat);
+}
+.btn:hover { border-color: var(--amarillo); }
+.btn-primary { background: var(--amarillo); border-color: var(--amarillo); color: var(--negro); }
+.btn[disabled] { opacity: .6; cursor: progress; }
+.btn kbd { padding: 3px 5px; border-radius: 4px; background: rgba(10, 13, 18, .14); font: 700 10px/1 var(--montserrat); }
+
+:focus-visible { outline: 2px solid var(--amarillo); outline-offset: 2px; }
+
+/* ---------- Layout ---------- */
+.workspace { display: grid; grid-template-columns: 430px minmax(0, 1fr); min-height: 0; }
+.panel { overflow-y: auto; padding: 6px 20px 40px; background: var(--ui-panel); border-right: 1px solid var(--ui-line); }
+
+fieldset { display: grid; gap: 12px; padding: 18px 0; border: 0; border-bottom: 1px solid var(--ui-line); }
+fieldset:last-of-type { border-bottom: 0; }
+legend { float: left; width: 100%; margin-bottom: 2px; font: 700 11px/1 var(--montserrat); letter-spacing: .16em; text-transform: uppercase; color: var(--amarillo); }
+
+.field { display: grid; gap: 6px; min-width: 0; }
+.field > span { display: flex; justify-content: space-between; gap: 8px; font: 600 12px/1.2 var(--montserrat); color: var(--ui-dim); }
+.count { font-style: normal; font-weight: 500; }
+.count.over { color: var(--amarillo); }
+.val { font-weight: 600; color: var(--blanco); font-variant-numeric: tabular-nums; }
+.hint { font-size: 12px; color: var(--ui-dim); }
+
+input[type="text"], textarea, select {
+  width: 100%; min-width: 0; padding: 9px 11px;
+  border: 1px solid var(--ui-line); border-radius: 8px; background: var(--ui-field);
+  color: var(--blanco); font: 500 14px/1.4 var(--montserrat);
+}
+textarea { min-height: 80px; resize: vertical; }
+input[type="text"]:focus, textarea:focus, select:focus { outline: 2px solid var(--amarillo); outline-offset: 0; border-color: transparent; }
+input[type="color"] { width: 100%; height: 39px; padding: 3px; border: 1px solid var(--ui-line); border-radius: 8px; background: var(--ui-field); cursor: pointer; }
+input[type="range"] { width: 100%; accent-color: var(--amarillo); }
+
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.team { display: grid; grid-template-columns: minmax(0, 1fr) 64px 48px 56px; gap: 8px; align-items: end; }
+.stat-row { display: grid; grid-template-columns: minmax(0, 1fr) 70px 70px; gap: 8px; }
+
+.dropzone {
+  display: flex; align-items: center; gap: 14px; width: 100%; min-height: 92px; padding: 12px;
+  border: 1.5px dashed #3A4250; border-radius: 10px; background: var(--ui-field);
+  color: var(--ui-dim); font: 500 13px/1.45 var(--montserrat); text-align: left; cursor: pointer;
+}
+.dropzone b { color: var(--blanco); font-weight: 600; }
+.dropzone:hover, .dropzone.drag { border-color: var(--amarillo); }
+.dropzone img { flex: none; width: 66px; height: 66px; object-fit: cover; border-radius: 6px; }
+.dropzone.compact { min-height: 60px; padding: 8px 10px; gap: 10px; }
+.dropzone.compact img { width: 44px; height: 44px; object-fit: contain; border-radius: 0; }
+.slot { display: grid; gap: 10px; }
+.slot + .slot { padding-top: 12px; border-top: 1px dashed var(--ui-line); }
+.slot-title { font: 600 12px/1 var(--montserrat); color: var(--blanco); }
+
+.logo-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 12px; align-items: center; }
+.logo-row .link { grid-column: 2; }
+.check { display: inline-flex; align-items: center; gap: 8px; font: 600 12px/1.2 var(--montserrat); color: var(--ui-dim); cursor: pointer; white-space: nowrap; }
+.check input { width: 16px; height: 16px; accent-color: var(--amarillo); }
+.link { justify-self: start; padding: 0; border: 0; background: none; color: var(--ui-dim); font: 600 12px/1 var(--montserrat); text-decoration: underline; cursor: pointer; }
+.link:hover { color: var(--blanco); }
+.links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+
+/* Size slider with its "Auto-fit" switch on the right */
+.size-control { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px; align-items: end; }
+.size-control .check { padding-bottom: 3px; }
+
+/* ---------- Preview ---------- */
+.preview { position: relative; display: grid; place-items: center; min-width: 0; min-height: 0; overflow: hidden; padding: 24px; }
+.preview.drag::after { content: "Drop the photo"; position: absolute; inset: 12px; display: grid; place-items: center; border: 2px dashed var(--amarillo); border-radius: 14px; background: rgba(10, 13, 18, .7); color: var(--blanco); font: 600 18px/1 var(--montserrat); pointer-events: none; }
+.stage { box-shadow: 0 14px 44px rgba(0, 0, 0, .55); }
+.stage > .canvas { transform-origin: 0 0; }
+.headline { cursor: pointer; }
+
+/* Photo framing: drag the photo to move it, scroll to zoom. Text and logo layers let the
+   mouse through to the photo underneath (the headline stays clickable for the yellow word). */
+.stage .wordmark, .stage .flash-line, .stage .uh-text, .stage .dc-text, .stage .ej-text, .stage .ej-credit { pointer-events: none; }
+.stage .headline { pointer-events: auto; }
+.stage [data-photo] { cursor: pointer; }
+.stage [data-photo].has-photo { cursor: grab; }
+.stage [data-photo].has-photo.panning { cursor: grabbing; }
+.stage .canvas { touch-action: none; }   /* one finger moves the photo, two fingers zoom */
+
+/* ---------- Toasts ---------- */
+.toasts { position: fixed; right: 18px; bottom: 18px; z-index: 50; display: grid; gap: 8px; justify-items: end; }
+.toast { max-width: 520px; padding: 12px 14px; border-left: 4px solid var(--amarillo); border-radius: 10px; background: #232934; color: var(--blanco); font-size: 13px; box-shadow: 0 8px 28px rgba(0, 0, 0, .45); }
+.toast.error { border-left-color: var(--ui-error); }
+
+/* ---------- Result sheet (phone app): Share / Save / Copy ---------- */
+.result { width: min(560px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); margin: auto; padding: 0; border: 1px solid var(--ui-line); border-radius: 16px; background: var(--ui-panel); color: var(--ui-text); }
+.result::backdrop { background: rgba(5, 7, 10, .78); }
+.result-card { display: grid; gap: 14px; padding: 18px; }
+.result h2 { font: 400 24px/1 var(--anton); letter-spacing: .02em; color: var(--blanco); }
+.result img { display: block; width: 100%; max-height: 58dvh; object-fit: contain; border-radius: 8px; background: var(--negro); }
+.result-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.result-actions .btn { flex: 1 1 96px; justify-content: center; padding: 14px 10px; font-size: 15px; }
+
+/* Touch vs mouse wording */
+.t-touch { display: none; }
+@media (pointer: coarse) {
+  .t-touch { display: inline; }
+  .t-mouse { display: none; }
+  .btn kbd { display: none; }
+  input[type="range"] { height: 30px; }
+  .link { padding: 6px 0; }
+}
+
+/* ---------- Phone and narrow windows: preview on top, form below ---------- */
+@media (max-width: 860px) {
+  html, body { height: auto; }
+  html { overscroll-behavior-y: contain; }   /* no accidental pull-to-refresh while editing */
+  body { display: block; overflow: visible; }
+
+  .topbar { position: sticky; top: 0; z-index: 20; flex-wrap: wrap; gap: 8px; padding: 8px 12px; padding-top: max(8px, env(safe-area-inset-top)); }
+  .brand small { display: none; }
+  /* All four tabs on one row, even on a 360 px wide phone */
+  .tabs { order: 3; flex: 1 0 100%; gap: 2px; padding: 3px; overflow-x: auto; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { flex: 1 1 auto; padding: 11px 4px; font-size: 12px; }
+
+  /* Big Generate button at the bottom, within thumb reach */
+  #btn-generate {
+    position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 30;
+    justify-content: center; padding: 16px; font-size: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, .55);
+  }
+
+  .workspace { display: flex; flex-direction: column; }
+  /* The preview comes first and stays visible under the top bar while you scroll the form */
+  .preview {
+    order: -1; position: sticky; top: var(--topbar-h, 104px); z-index: 10;
+    height: clamp(220px, 44dvh, 560px); padding: 10px;
+    background: var(--ui-bg); border-bottom: 1px solid var(--ui-line);
+    touch-action: none;   /* fingers frame the photo instead of scrolling the page */
+  }
+  .panel { overflow: visible; padding: 0 16px calc(100px + env(safe-area-inset-bottom)); border-right: 0; }
+
+  /* Typing: the keyboard takes half the screen, so the preview shrinks and the bar scrolls away */
+  body.typing .topbar { position: static; }
+  body.typing .preview { top: 0; height: clamp(140px, 30dvh, 340px); }
+  body.typing #btn-generate { display: none; }
+
+  .toasts { left: 12px; right: 12px; bottom: calc(84px + env(safe-area-inset-bottom)); justify-items: stretch; }
+  .toast { max-width: none; }
+}
